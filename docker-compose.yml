@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.3"
 services:
   frontend:
     build: ./frontend
@@ -18,6 +18,11 @@ services:
       - POSTGRES_PASSWORD=root
     volumes: 
       - db:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
 volumes:
   db:
     driver: local
