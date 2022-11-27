@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    ports:
+      - "8600:8600"
+  postgres:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
