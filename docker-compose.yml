@@ -4,7 +4,7 @@ services:
     build: ./frontend
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - 8000:8000
   backend:
     build: ./backend
     restart: unless-stopped
@@ -13,10 +13,13 @@ services:
   postgres:
     image: postgres:latest
     restart: unless-stopped
+    ports:
+      - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
-    volumes: 
+      - POSTGRES_DB=cloud
+    volumes:
       - db:/var/lib/postgresql/data
   adminer:
     image: adminer
