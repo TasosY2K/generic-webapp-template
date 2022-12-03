@@ -25,8 +25,8 @@ while True:
     r=requests.post(f"http://{host_http}:50000/get",json=json_template)
     timedata=r.json()["monitoring"][0]["data"][0]["values"]
     for data in timedata:
-        #msg=str(data["timestamp"])+","+str(data["val"])
+        msg=str(data["timestamp"])+","+str(data["val"])
         #print(msg)
-        client.publish(topic="teamA/fog1/dev",qos=1,payload="1,1")
+        client.publish(topic="teamA/fog1/dev",qos=1,payload=msg)
     client.loop_write()
     #time.sleep(offset)
