@@ -28,7 +28,7 @@ export default function DashboardAppPage() {
   
   const [value, onChange] = useState(new Date());
 
-  const { data: stats = [] } = useFetch(`/stats/${value}/`, {}, value);
+  const { data: stats = [] } = useFetch(`/api/v1/power/get/${value}/`, {}, value);
 
   return (
     <>
