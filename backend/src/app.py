@@ -1,25 +1,39 @@
 # load libaries
 from flask import Flask, jsonify
 import sys
+import json
 from src.api_spec import spec
+from sqlalchemy import Column, Integer, Float, String, TIMESTAMP, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import text
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+class PowerMeasurement(Base):
+    __tablename__ = "PowerMeasurement"
+
+    id = Column(Integer, primary_key=True, index=True)
+    timestamp = Column(String)
+    source = Column(String)
+    value = Column(String)
+
+    def __dict__(self):
+        return {'id': self.id, 'timestamp': self.timestamp, 'source': self.source, 'value': self.value}
 
 # load modules
-from src.blueprints.auth import auth_bp
-from src.blueprints.swagger import swagger_ui_blueprint, SWAGGER_URL
-
 app = Flask(__name__)
-app.register_blueprint(auth_bp, url_prefix="/api/v1/auth")
-app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+DB_PATH = "postgresql://postgres:root@localhost:5432/postgres"
+engine = create_engine(DB_PATH, echo=False)
+Session = sessionmaker(bind=engine)
+session = Session()
 
-with app.test_request_context():
-    # register all swagger documented functions here
-    for fn_name in app.view_functions:
-        if fn_name == 'static':
-            continue
-        print(f"Loading swagger docs for function: {fn_name}")
-        view_fn = app.view_functions[fn_name]
-        spec.path(view=view_fn)
-
-@app.route("/api/swagger.json")
-def create_swagger_spec():
-    return jsonify(spec.to_dict())
+@app.route("/get")
+def get_data():
+    sql = text("SELECT * FROM PowerMeasurement")
+    data = engine.execute(sql)
+    print(data)
+    f = []
+    for i in data:
+        f.append(dict(i))
+    return jsonify(f)

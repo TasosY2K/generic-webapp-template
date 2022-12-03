@@ -1,18 +1,8 @@
 version: "3.3"
 services:
-  frontend:
-    build: ./frontend
-    restart: unless-stopped
-    ports:
-      - 8000:8000
-  backend:
-    build: ./backend
-    restart: unless-stopped
-    ports:
-      - "8600:8600"
-  subscriber:
-    build: ./subscriber
-    restart: unless-stopped
+  # subscriber:
+  #   build: ./subscriber
+  #   restart: unless-stopped
   postgres:
     image: postgres:latest
     restart: unless-stopped
@@ -24,6 +14,11 @@ services:
       - POSTGRES_DB=cloud
     volumes:
       - db:/var/lib/postgresql/data
+  grafana:
+    image: grafana/grafana-oss:latest
+    restart: unless-stopped
+    ports:
+      - 3000:3000
   adminer:
     image: adminer
     restart: unless-stopped

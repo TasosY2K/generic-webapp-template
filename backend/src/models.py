@@ -1,3 +1,13 @@
-import datetime
+from sqlalchemy import Column, Integer, Float, String, TIMESTAMP, create_engine
+from sqlalchemy.ext.declarative import declarative_base
 
-from src.app import app, db, bcrypt
+
+Base = declarative_base()
+
+class PowerMeasurement(Base):
+    __tablename__ = "PowerMeasurement"
+
+    id = Column(Integer, primary_key=True, index=True)
+    timestamp = Column(Integer)
+    source = Column(String)
+    value = Column(Float)

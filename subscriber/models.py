@@ -10,6 +10,6 @@ class PowerMeasurement(Base):
     __tablename__ = "PowerMeasurement"
 
     id = Column(Integer, primary_key=True, index=True)
-    timestamp = Column(Integer)
+    timestamp = Column(String)
     source = Column(String)
-    value = Column(Float)
+    value = Column(String)
